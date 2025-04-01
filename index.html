@@ -1,319 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thriftify</title>
-    <style>
-        /* Modern Styles */
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f8f8f8;
-            color: #333;
-            line-height: 1.7;
-        }
-
-        header {
-            background-color: #fff;
-            padding: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-        }
-
-        .nav-buttons button {
-            background: none;
-            border: none;
-            color: #555;
-            padding: 10px 18px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: color 0.3s ease;
-        }
-
-        .nav-buttons button:hover {
-            color: #007bff;
-        }
-
-        .item-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .item {
-            background-color: #fff;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            padding: 20px;
-            width: calc(33.33% - 40px);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-            text-align: center;
-        }
-        .search-container {
-      position: relative;
-      width: 300px;
-    }
-        .search-bar {
-      width: 100%;
-      padding: 10px;
-      padding-right: 40px; /* Space for the magnifying glass */
-      border: 2px solid #ccc;
-      border-radius: 20px;
-      font-size: 16px;
-      outline: none;
-      background: url("https://pouch.jumpshare.com/preview/YNVy8m0ipiuGcAqPhlSIvojpkuepOPRlPzVoooCEeoiiEa0_0TCYSWm876p7V0v7x2YLMfAuspsnIf-CRwwcpWQ7vW1ReRqlF0JqFsPuLQw") no-repeat right 10px center; /* Use your image here */
-      background-size: 20px; /* Adjust the size of the image */
-      transition: border-color 0.3s ease;
-    }
-    .search-bar:focus {
-      border-color: #007bff;
-    }
-
-
-        .item img {
-            max-width: 100%;
-            border-radius: 6px;
-        }
-        .search-icon {
-      position: absolute;
-      right: 10px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 20px; /* Set the size of your icon */
-      height: 20px;
-    }
-
-        .price {
-            font-weight: bold;
-            color: #007bff;
-        }
-        .banner {
-      width: 100%; 
-      background-color: #494949; 
-      color: white;
-      text-align: center; 
-      padding: 0px 0; 
-      font-size: 1.5rem; 
-      font-family: 'Montserrat', sans-serif;
-        }
-    
-    .second-banner {
-      background-color: #BDC9BB; 
-      font-size: 1.3rem; 
-      font-weight: 400; 
-      padding: 5px 0; 
-    }
-    .menu-container {
-      display: flex;
-      justify-content: center; 
-      padding: 0 50x; 
-      width: 100%;
-    }
-    .menu-item {
-      position: relative; 
-      cursor: pointer;
-      padding: 5px;
-      font-size: 1rem; 
-      color: #494949;
-      flex-grow: 1;
-      transition: color 0.3s ease;
-    }
-    .menu-item:hover {
-      color: #5D6C55; 
-    }
-    .dropdown {
-      display: none;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      background-color: #333;
-      width: 100%;
-      padding: 10px;
-      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-      z-index: 1;
-      opacity: 0.8; 
-      transition: opacity 0.3s ease; 
-    }
-    .dropdown a {
-      display: block;
-      color: white;
-      padding: 8px;
-      text-decoration: none;
-      transition: background-color 0.3s;
-    }
-
-    .dropdown a:hover {
-      background-color: #555; 
-    }
-
-    
-    .menu-item:hover .dropdown {
-      display: block;
-    }
-
-
-        footer {
-            background-color: #333;
-            color: #fff;
-            padding: 20px;
-            text-align: center;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .item {
-                width: 100%;
-            }
-        }
-    </style>
-
-    <!-- Firebase SDK -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
-    
-        const firebaseConfig = {
-            apiKey: "AIzaSyABy3Pe6oQHI0SFLgwqoyoVeCbH0u_vIyo",
-            authDomain: "thriftify-2c973.firebaseapp.com",
-            projectId: "thriftify-2c973",
-            storageBucket: "thriftify-2c973.appspot.com",
-            messagingSenderId: "105212347644",
-            appId: "1:105212347644:web:14b66bfc80a9e8875b4379"
-        };
-    
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-    
-        // Signup Function
-        async function signUpUser() {
-            const email = prompt("Enter Email:");
-            const password = prompt("Enter Password:");
-            try {
-                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                await addDoc(collection(db, "users"), { email });
-                alert("Sign Up Successful!");
-            } catch (error) {
-                alert(error.message);
-            }
-        }
-    
-        // Signin Function
-        async function signInUser() {
-            const email = prompt("Enter Email:");
-            const password = prompt("Enter Password:");
-            try {
-                await signInWithEmailAndPassword(auth, email, password);
-                alert("Login Successful!");
-            } catch (error) {
-                alert(error.message);
-            }
-        }
-    
-        // Logout Function
-        async function logOutUser() {
-            await signOut(auth);
-            alert("Logged Out Successfully!");
-        }
-    
-        // Fetch Items from Firestore
-        async function loadItems() {
-            const itemList = document.querySelector(".item-list");
-            itemList.innerHTML = "";
-            const querySnapshot = await getDocs(collection(db, "items"));
-            querySnapshot.forEach((doc) => {
-                const item = doc.data();
-                itemList.innerHTML += `
-                    <div class="item">
-                        <img src="${item.image || 'https://placehold.co/200x200?text=No+Image'}" alt="${item.name}">
-                        <h3>${item.name}</h3>
-                        <p>${item.description}</p>
-                        <p class="price">$${item.price}</p>
-                    </div>
-                `;
-            });
-        }
-    
-        window.signUpUser = signUpUser;
-        window.signInUser = signInUser;
-        window.logOutUser = logOutUser;
-        window.loadItems = loadItems;
-    </script>
-    
 </head>
 <body onload="loadItems()">
     <header>
-        
-        
         <img src="https://i.ibb.co/DftrFYZY/IMG-20250401-161220.jpg" alt="Thriftify Logo" style="max-width:15%;">
         <div class="search-container">
             <input type="text" class="search-bar" placeholder="Search">
-        
         </div>
-        
         <div class="nav-buttons">
             <button onclick="signUpUser()">Sign Up</button>
             <button onclick="signInUser()">Login</button>
             <button><i class="fa fa-shopping-cart"></i></button>
         </div>
     </header>
-    <div class="banner">
-        Thrifting Made Easy <!-- or thrift with swift?-->
-      </div>
-      <div class="banner second-banner">
-        <!-- Menu container -->
-        <div class="menu-container">
-          <div class="menu-item">Topwear
-            <div class="dropdown">
-              <a href="#">Shirts</a>
-              <a href="#">T-Shirts</a>
-              <a href="#">Sweaters</a>
-            </div>
-          </div>
-          
-          <div class="menu-item">Bottomwear
-            <div class="dropdown">
-              <a href="#">Jeans</a>
-              <a href="#">Shorts</a>
-              <a href="#">Trousers</a>
-            </div>
-          </div>
 
-          <div class="menu-item">Dresses
-            <div class="dropdown">
-              <a href="#">Maxi Dresses</a>
-              <a href="#">Mini Dresses</a>
-              <a href="#">A-line Dresses</a>
+    <div class="banner">
+        Thrifting Made Easy
+    </div>
+    
+    <div class="banner second-banner">
+        <div class="menu-container">
+            <div class="menu-item">Topwear
+                <div class="dropdown">
+                    <a href="#">Shirts</a>
+                    <a href="#">T-Shirts</a>
+                    <a href="#">Sweaters</a>
+                </div>
             </div>
-          </div>
-          
-          <div class="menu-item">Footwear
-            <div class="dropdown">
-              <a href="#">Sneakers</a>
-              <a href="#">Boots</a>
-              <a href="#">Heels</a>
+            
+            <div class="menu-item">Bottomwear
+                <div class="dropdown">
+                    <a href="#">Jeans</a>
+                    <a href="#">Shorts</a>
+                    <a href="#">Trousers</a>
+                </div>
             </div>
-          </div>
-          
-          <div class="menu-item">Accessories
-            <div class="dropdown">
-              <a href="#">Bags</a>
-              <a href="#">Hats</a>
-              <a href="#">Watches</a>
+
+            <div class="menu-item">Dresses
+                <div class="dropdown">
+                    <a href="#">Maxi Dresses</a>
+                    <a href="#">Mini Dresses</a>
+                    <a href="#">A-line Dresses</a>
+                </div>
             </div>
-          </div>
+            
+            <div class="menu-item">Footwear
+                <div class="dropdown">
+                    <a href="#">Sneakers</a>
+                    <a href="#">Boots</a>
+                    <a href="#">Heels</a>
+                </div>
+            </div>
+            
+            <div class="menu-item">Accessories
+                <div class="dropdown">
+                    <a href="#">Bags</a>
+                    <a href="#">Hats</a>
+                    <a href="#">Watches</a>
+                </div>
+            </div>
         </div>
-      </div>
+    </div>
+
     <div class="item-list">
         <!-- Items will be loaded dynamically -->
     </div>
