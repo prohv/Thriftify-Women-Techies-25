@@ -46,6 +46,11 @@ header {
     top: 50%; /* Vertically center it */
     transform: translateY(-50%); /* Adjust vertical centering */
 }
+a {
+    text-decoration: none; /* Removes underline */
+    color: inherit; /* Inherit color from parent (i.e., .text-link color) */
+}
+
 
 .nav-buttons button:hover {
     color: #007bff;
