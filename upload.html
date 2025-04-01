@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Item - Thriftify</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        /* Modern Styles */
+        body {
+            font-family: 'Montserrat', sans-serif; /* Updated font */
+            margin: 0;
+            padding: 0;
+            background-color: #f8f8f8;
+            color: #333;
+            line-height: 1.7;
+        }
+
+        header {
+            background-color: #fff;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        }
+
+        header img {
+            max-width: 15%;
+        }
+
+        .upload-form-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .upload-form-container h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #212529;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 500;
+            color: #555;
+            font-size: 1rem;
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            height: 120px;
+        }
+
+        .form-group select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3E%3Cpath fill='%23343a40' d='M2 0L0 2h4z'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 12px;
+            padding-right: 30px;
+        }
+
+        .form-group select:focus {
+             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3E%3Cpath fill='%23007bff' d='M2 0L0 2h4z'%3E%3C/path%3E%3C/svg%3E");
+        }
+
+        .form-actions {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .upload-button {
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .upload-button:hover {
+            background-color: #45a049;
+            box-shadow: 0 3px 7px rgba(0, 0, 0, 0.15);
+        }
+
+        .upload-button:active{
+             transform: translateY(1px);
+            box-shadow: none;
+        }
+
+
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .upload-form-container {
+                padding: 20px;
+            }
+            .form-group input, .form-group textarea, .form-group select{
+                padding: 10px;
+            }
+        }
+    </style>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-storage.js";
+
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+
+        let currentUser = null;
+
+        onAuthStateChanged(auth, (user) => {
+            currentUser = user;
+            if (!user) {
+                alert("Please sign in to upload items.");
+                window.location.href = '/';
+            }
+        });
+
+        async function uploadItem() {
+            const name = document.getElementById('name').value;
+            const description = document.getElementById('description').value;
+            const price = document.getElementById('price').value;
+            const gender = document.getElementById('gender').value;
+            const size = document.getElementById('size').value;
+            const color = document.getElementById('color').value;
+            const imageFile = document.getElementById('image').files[0];
+
+            if (!name || !description || !price || !imageFile) {
+                alert("Please fill in all required fields.");
+                return;
+            }
+
+            if (!currentUser) {
+                alert("You must be logged in to upload an item.");
+                return;
+            }
+
+            try {
+                const imageRef = ref(storage, `images/${imageFile.name}`);
+                await uploadBytes(imageRef, imageFile);
+                const imageURL = await getDownloadURL(imageRef);
+
+                const docRef = await addDoc(collection(db, "items"), {
+                    name,
+                    description,
+                    price: Number(price),
+                    gender,
+                    size,
+                    color,
+                    image: imageURL,
+                    userId: currentUser.uid,
+                    timestamp: new Date()
+                });
+
+                alert("Item uploaded successfully!");
+                window.location.href = '/';
+            } catch (error) {
+                console.error("Error uploading item:", error);
+                alert("Failed to upload item. Please try again.");
+            }
+        }
+
+        window.uploadItem = uploadItem;
+    </script>
+</head>
+<body>
+    <header>
+        <img src="https://i.ibb.co/DftrFYZY/IMG-20250401-161220.jpg" alt="Thriftify Logo">
+        <nav>
+            </nav>
+    </header>
+
+    <div class="upload-form-container">
+        <h2 style="color: #212529; font-weight: 600;">Upload New Item</h2>
+        <form>
+            <div class="form-group">
+                <label for="name">Name:<span style="color:red;">*</span></label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description:<span style="color:red;">*</span></label>
+                <textarea id="description" name="description" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="price">Price:<span style="color:red;">*</span></label>
+                <input type="number" id="price" name="price" required>
+            </div>
+             <div class="form-group">
+                <label for="gender">Gender:</label>
+                <select id="gender" name="gender">
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="unisex">Unisex</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="size">Size:</label>
+                <select id="size" name="size">
+                    <option value="xs">XS</option>
+                    <option value="s">S</option>
+                    <option value="m">M</option>
+                    <option value="l">L</option>
+                    <option value="xl">XL</option>
+                    <option value="xxl">XXL</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="color">Color:</label>
+                 <select id="color" name="color">
+                    <option value="red">Red</option>
+                    <option value="blue">Blue</option>
+                    <option value="green">Green</option>
+                    <option value="yellow">Yellow</option>
+                    <option value="black">Black</option>
+                    <option value="white">White</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="image">Image:<span style="color:red;">*</span></label>
+                <input type="file" id="image" name="image" accept="image/*" required>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="upload-button" onclick="uploadItem()">Upload Item</button>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>
