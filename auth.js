@@ -8,7 +8,7 @@ const firebaseConfig = {
     storageBucket: "YOUR_STORAGE_BUCKET",
     messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
     appId: "YOUR_APP_ID"
-};/
+};
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -28,12 +28,18 @@ function toggleForms() {
 
 toggleForms();
 
-document.getElementById("signup-link").addEventListener("click", () => {
+document.getElementById("signup-link").addEventListener("click", (event) => {
+    event.preventDefault();
     window.location.href = "auth.html?type=signup";
 });
 
-document.getElementById("login-link").addEventListener("click", () => {
+document.getElementById("login-link").addEventListener("click", (event) => {
+    event.preventDefault();
     window.location.href = "auth.html?type=login";
+});
+
+document.getElementById("signup-button").addEventListener("click", () => {
+    window.location.href = "auth.html?type=signup";
 });
 
 // Handle sign-up
