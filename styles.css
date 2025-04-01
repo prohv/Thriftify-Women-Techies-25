@@ -7,6 +7,13 @@ body {
     color: #333;
     line-height: 1.7;
 }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    max-width: 100%;
+}
+
 
 header {
     background-color: #fff;
