@@ -4,91 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login / Sign Up</title>
-    <script type="module" src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
-    <script type="module" src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
-    <script type="module" src="auth.js"></script>
+
+    <!-- Link to external CSS file -->
     <link rel="stylesheet" href="auth.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f4f8;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }/
 
-        .container {
-            background-color: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            width: 300px;
-            text-align: center;
-        }
-
-        h2 {
-            margin-bottom: 20px;
-            color: #333;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            text-align: left;
-            margin-bottom: 5px;
-            color: #555;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            box-sizing: border-box;
-        }
-
-        .form-group button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 100%;
-            transition: background-color 0.3s ease;
-        }
-
-        .form-group button:hover {
-            background-color: #45a049;
-        }
-
-        .link-container {
-            margin-top: 15px;
-            font-size: 0.9em;
-            color: #555;
-        }
-
-        .link-container a {
-            color: #007bff;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .link-container a:hover {
-            text-decoration: underline;
-            color: #0056b3;
-        }
-
-        #signup-form {
-            display: none;
-        }
-    </style>
+    <!-- Firebase SDK (Loaded via auth.js instead) -->
+    <script type="module" src="auth.js"></script>
 </head>
 <body>
     <div class="container">
@@ -112,7 +33,7 @@
             </div>
         </div>
 
-        <div id="signup-form">
+        <div id="signup-form" style="display: none;">
             <h2>Sign Up</h2>
             <form id="signupForm">
                 <div class="form-group">
