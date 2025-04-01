@@ -1,96 +1,119 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+// Import Firebase modules
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
 
-// 🔥 Replace with your actual Firebase credentials
+// Firebase Config
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_AUTH_DOMAIN",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_STORAGE_BUCKET",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID"
+    apiKey: "AIzaSyABy3Pe6oQHI0SFLgwqoyoVeCbH0u_vIyo",
+    authDomain: "thriftify-2c973.firebaseapp.com",
+    projectId: "thriftify-2c973",
+    storageBucket: "thriftify-2c973.appspot.com",
+    messagingSenderId: "105212347644",
+    appId: "1:105212347644:web:14b66bfc80a9e8875b4379",
+    measurementId: "G-CT0E1MM2LC"
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
 
-// Debugging: Check if Firebase is correctly initialized
-console.log("Firebase Initialized:", app);
-console.log("Auth Instance:", auth);
+let itemsData = []; // Store fetched items for filtering
 
-// Function to toggle between login and signup forms
-function toggleForms(type = "login") {
-    const loginForm = document.getElementById("login-form");
-    const signupForm = document.getElementById("signup-form");
-
-    if (!loginForm || !signupForm) {
-        console.error("Login or Signup form not found!");
-        return;
-    }
-
-    if (type === "signup") {
-        loginForm.style.display = "none";
-        signupForm.style.display = "block";
-        console.log("Switched to Sign-up Form");
-    } else {
-        signupForm.style.display = "none";
-        loginForm.style.display = "block";
-        console.log("Switched to Login Form");
+// Signup Function
+async function signUpUser() {
+    const email = prompt("Enter Email:");
+    const password = prompt("Enter Password:");
+    try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        await addDoc(collection(db, "users"), { email });
+        alert("Sign Up Successful!");
+    } catch (error) {
+        alert(error.message);
     }
 }
 
-// Run on page load
+// Signin Function
+async function signInUser() {
+    const email = prompt("Enter Email:");
+    const password = prompt("Enter Password:");
+    try {
+        await signInWithEmailAndPassword(auth, email, password);
+        alert("Login Successful!");
+    } catch (error) {
+        alert(error.message);
+    }
+}
+
+// Logout Function
+async function logOutUser() {
+    await signOut(auth);
+    alert("Logged Out Successfully!");
+}
+
+// Fetch Items from Firestore
+async function loadItems() {
+    const itemList = document.querySelector(".item-list");
+    itemList.innerHTML = "";
+    console.log("Fetching items..."); // Debugging
+
+    try {
+        const querySnapshot = await getDocs(collection(db, "items"));
+        itemsData = []; // Reset stored items
+
+        querySnapshot.forEach((doc) => {
+            const item = doc.data();
+            console.log("Fetched item:", item); // Debugging
+            itemsData.push(item);
+        });
+
+        displayItems(itemsData);
+    } catch (error) {
+        console.error("Error fetching items:", error);
+    }
+}
+
+// Function to display items in the UI
+function displayItems(items) {
+    const itemList = document.querySelector(".item-list");
+    itemList.innerHTML = "";
+
+    items.forEach((item) => {
+        itemList.innerHTML += `
+            <div class="item">
+                <img src="${item.Image || 'https://placehold.co/200x200?text=No+Image'}" alt="${item.Name}">
+                <h3>${item.Name}</h3>
+                <p>Tag: ${item.Tag}</p>
+                <p class="price">₹${item.Price}</p>
+            </div>
+        `;
+    });
+}
+
+// Search Function
+function searchItems() {
+    const searchInput = document.querySelector(".search-bar").value.toLowerCase();
+    const filteredItems = itemsData.filter(item => 
+        item.Name.toLowerCase().includes(searchInput) || 
+        item.Tag.toLowerCase().includes(searchInput)
+    );
+    displayItems(filteredItems);
+}
+
+// Attach event listener to the search bar
 document.addEventListener("DOMContentLoaded", () => {
-    // Read URL parameter
-    const params = new URLSearchParams(window.location.search);
-    const type = params.get("type") || "login";
-    toggleForms(type);
+    const searchBar = document.querySelector(".search-bar");
+    if (searchBar) {
+        searchBar.addEventListener("input", searchItems);
+    }
 });
 
-// Handle sign-up
-const signupForm = document.getElementById("signupForm");
-signupForm?.addEventListener("submit", (event) => {
-    event.preventDefault();
-    const email = document.getElementById("signup-email").value;
-    const password = document.getElementById("signup-password").value;
+// Expose functions globally
+window.signUpUser = signUpUser;
+window.signInUser = signInUser;
+window.logOutUser = logOutUser;
+window.loadItems = loadItems;
 
-    createUserWithEmailAndPassword(auth, email, password)
-        .then(() => {
-            alert("Sign-up successful! Redirecting...");
-            window.location.href = "index.html";
-        })
-        .catch((error) => {
-            alert("Error: " + error.message);
-            console.error("Signup Error:", error);
-        });
-});
-
-// Handle login
-const loginForm = document.getElementById("loginForm");
-loginForm?.addEventListener("submit", (event) => {
-    event.preventDefault();
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-
-    signInWithEmailAndPassword(auth, email, password)
-        .then(() => {
-            alert("Login successful! Redirecting...");
-            window.location.href = "index.html";
-        })
-        .catch((error) => {
-            alert("Error: " + error.message);
-            console.error("Login Error:", error);
-        });
-});
-
-// Handle switching between forms (without page reload)
-document.getElementById("signup-link")?.addEventListener("click", (event) => {
-    event.preventDefault();
-    toggleForms("signup");
-});
-
-document.getElementById("login-link")?.addEventListener("click", (event) => {
-    event.preventDefault();
-    toggleForms("login");
-});
+// Load items on page load
+window.onload = loadItems;
