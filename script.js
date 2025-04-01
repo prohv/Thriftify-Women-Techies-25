@@ -19,6 +19,8 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+let itemsData = []; // Store fetched items for filtering
+
 // Signup Function
 async function signUpUser() {
     const email = prompt("Enter Email:");
@@ -28,7 +30,6 @@ async function signUpUser() {
         await addDoc(collection(db, "users"), { email });
         alert("Sign Up Successful!");
     } catch (error) {
-        console.error("Signup Error:", error);
         alert(error.message);
     }
 }
@@ -41,68 +42,71 @@ async function signInUser() {
         await signInWithEmailAndPassword(auth, email, password);
         alert("Login Successful!");
     } catch (error) {
-        console.error("Signin Error:", error);
         alert(error.message);
     }
 }
 
 // Logout Function
 async function logOutUser() {
-    try {
-        await signOut(auth);
-        alert("Logged Out Successfully!");
-    } catch (error) {
-        console.error("Logout Error:", error);
-        alert(error.message);
-    }
+    await signOut(auth);
+    alert("Logged Out Successfully!");
 }
 
-// Fetch Items from Firestore with improved debugging
+// Fetch Items from Firestore
 async function loadItems() {
     const itemList = document.querySelector(".item-list");
-    
-    if (!itemList) {
-        console.error("Error: '.item-list' element not found.");
-        return;
-    }
-
     itemList.innerHTML = "";
-    console.log("Fetching items from Firestore...");
+    console.log("Fetching items..."); // Debugging
 
     try {
         const querySnapshot = await getDocs(collection(db, "items"));
-
-        if (querySnapshot.empty) {
-            console.warn("No items found in Firestore collection.");
-            itemList.innerHTML = "<p>No items available.</p>";
-            return;
-        }
+        itemsData = []; // Reset stored items
 
         querySnapshot.forEach((doc) => {
             const item = doc.data();
-            console.log("Fetched item:", item);
-
-            itemList.innerHTML += `
-                <div class="item">
-                    <img src="${item.Image || 'https://placehold.co/200x200?text=No+Image'}" alt="${item.Name}">
-                    <h3>${item.Name || 'Unnamed Item'}</h3>
-                    <p>Tag: ${item.Tag || 'No Tag'}</p>
-                    <p class="price">₹${item.Price || 'N/A'}</p>
-                </div>
-            `;
+            console.log("Fetched item:", item); // Debugging
+            itemsData.push(item);
         });
 
-        console.log("Items loaded successfully.");
+        displayItems(itemsData);
     } catch (error) {
-        console.error("Error fetching items from Firestore:", error);
-        itemList.innerHTML = `<p>Error loading items. Please try again later.</p>`;
+        console.error("Error fetching items:", error);
     }
 }
 
-// Ensure Firebase is initialized before loading items
+// Function to display items in the UI
+function displayItems(items) {
+    const itemList = document.querySelector(".item-list");
+    itemList.innerHTML = "";
+
+    items.forEach((item) => {
+        itemList.innerHTML += `
+            <div class="item">
+                <img src="${item.Image || 'https://placehold.co/200x200?text=No+Image'}" alt="${item.Name}">
+                <h3>${item.Name}</h3>
+                <p>Tag: ${item.Tag}</p>
+                <p class="price">₹${item.Price}</p>
+            </div>
+        `;
+    });
+}
+
+// Search Function
+function searchItems() {
+    const searchInput = document.querySelector(".search-bar").value.toLowerCase();
+    const filteredItems = itemsData.filter(item => 
+        item.Name.toLowerCase().includes(searchInput) || 
+        item.Tag.toLowerCase().includes(searchInput)
+    );
+    displayItems(filteredItems);
+}
+
+// Attach event listener to the search bar
 document.addEventListener("DOMContentLoaded", () => {
-    console.log("Document loaded. Initializing Firebase...");
-    loadItems();
+    const searchBar = document.querySelector(".search-bar");
+    if (searchBar) {
+        searchBar.addEventListener("input", searchItems);
+    }
 });
 
 // Expose functions globally
@@ -110,3 +114,6 @@ window.signUpUser = signUpUser;
 window.signInUser = signInUser;
 window.logOutUser = logOutUser;
 window.loadItems = loadItems;
+
+// Load items on page load
+window.onload = loadItems;
