@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thriftify</title>
@@ -55,25 +57,108 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
             text-align: center;
         }
-        .search-bar {
-      width: 300px; /* Width of the search bar */
-      padding: 10px; /* Padding inside the search bar */
-      border: 2px solid #ccc; /* Border color and thickness */
-      border-radius: 20px; /* Rounded corners */
-      font-size: 16px; /* Font size for text inside the search bar */
-      outline: none; /* Removes the default focus outline */
-      transition: border-color 0.3s ease; /* Smooth transition for border color */
+        .search-container {
+      position: relative;
+      width: 300px;
     }
+        .search-bar {
+      width: 100%;
+      padding: 10px;
+      padding-right: 40px; /* Space for the magnifying glass */
+      border: 2px solid #ccc;
+      border-radius: 20px;
+      font-size: 16px;
+      outline: none;
+      background: url("https://pouch.jumpshare.com/preview/YNVy8m0ipiuGcAqPhlSIvojpkuepOPRlPzVoooCEeoiiEa0_0TCYSWm876p7V0v7x2YLMfAuspsnIf-CRwwcpWQ7vW1ReRqlF0JqFsPuLQw") no-repeat right 10px center; /* Use your image here */
+      background-size: 20px; /* Adjust the size of the image */
+      transition: border-color 0.3s ease;
+    }
+    .search-bar:focus {
+      border-color: #007bff;
+    }
+
 
         .item img {
             max-width: 100%;
             border-radius: 6px;
         }
+        .search-icon {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px; /* Set the size of your icon */
+      height: 20px;
+    }
 
         .price {
             font-weight: bold;
             color: #007bff;
         }
+        .banner {
+      width: 100%; 
+      background-color: #494949; 
+      color: white;
+      text-align: center; 
+      padding: 7px 0; 
+      font-size: 1.5rem; 
+      font-family: 'Montserrat', sans-serif;
+        }
+    
+    .second-banner {
+      background-color: #BDC9BB; 
+      font-size: 1.3rem; 
+      font-weight: 400; 
+      padding: 5px 0; 
+    }
+    .menu-container {
+      display: flex;
+      justify-content: center; 
+      padding: 0 50x; 
+      width: 100%;
+    }
+    .menu-item {
+      position: relative; 
+      cursor: pointer;
+      padding: 5px;
+      font-size: 1rem; 
+      color: #494949;
+      flex-grow: 1;
+      transition: color 0.3s ease;
+    }
+    .menu-item:hover {
+      color: #5D6C55; 
+    }
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background-color: #333;
+      width: 100%;
+      padding: 10px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+      z-index: 1;
+      opacity: 0.8; 
+      transition: opacity 0.3s ease; 
+    }
+    .dropdown a {
+      display: block;
+      color: white;
+      padding: 8px;
+      text-decoration: none;
+      transition: background-color 0.3s;
+    }
+
+    .dropdown a:hover {
+      background-color: #555; 
+    }
+
+    
+    .menu-item:hover .dropdown {
+      display: block;
+    }
+
 
         footer {
             background-color: #333;
@@ -170,8 +255,10 @@
         
         
         <img src="https://i.ibb.co/ZzXpzmkG/thriftifylogo.webp" alt="Thriftify Logo" style="max-width:15%;">
+        <div class="search-container">
+            <input type="text" class="search-bar" placeholder="Search">
         
-        <input type="text" class="search-bar" placeholder="Search">
+        </div>
         
         <div class="nav-buttons">
             <button onclick="signUpUser()">Sign Up</button>
@@ -179,10 +266,55 @@
             <button onclick="logOutUser()">Logout</button>
         </div>
     </header>
+    <div class="banner">
+        Thrifting Made Easy <!-- or thrift with swift?-->
+      </div>
+      <div class="banner second-banner">
+        <!-- Menu container -->
+        <div class="menu-container">
+          <div class="menu-item">Topwear
+            <div class="dropdown">
+              <a href="#">Shirts</a>
+              <a href="#">T-Shirts</a>
+              <a href="#">Sweaters</a>
+            </div>
+          </div>
+          
+          <div class="menu-item">Bottomwear
+            <div class="dropdown">
+              <a href="#">Jeans</a>
+              <a href="#">Shorts</a>
+              <a href="#">Trousers</a>
+            </div>
+          </div>
 
-    <div class="promotion">
-        <p><strong>✨ Discover Unique Finds!</strong> Up to 60% off on vintage collections this month.</p>
-    </div>
+          <div class="menu-item">Dresses
+            <div class="dropdown">
+              <a href="#">Maxi Dresses</a>
+              <a href="#">Mini Dresses</a>
+              <a href="#">A-line Dresses</a>
+            </div>
+          </div>
+          
+          <div class="menu-item">Footwear
+            <div class="dropdown">
+              <a href="#">Sneakers</a>
+              <a href="#">Boots</a>
+              <a href="#">Heels</a>
+            </div>
+          </div>
+          
+          <div class="menu-item">Accessories
+            <div class="dropdown">
+              <a href="#">Bags</a>
+              <a href="#">Hats</a>
+              <a href="#">Watches</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    
     
 
     <div class="item-list">
