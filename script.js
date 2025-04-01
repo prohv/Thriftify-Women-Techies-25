@@ -28,6 +28,7 @@ async function signUpUser() {
         await addDoc(collection(db, "users"), { email });
         alert("Sign Up Successful!");
     } catch (error) {
+        console.error("Signup Error:", error);
         alert(error.message);
     }
 }
@@ -40,47 +41,72 @@ async function signInUser() {
         await signInWithEmailAndPassword(auth, email, password);
         alert("Login Successful!");
     } catch (error) {
+        console.error("Signin Error:", error);
         alert(error.message);
     }
 }
 
 // Logout Function
 async function logOutUser() {
-    await signOut(auth);
-    alert("Logged Out Successfully!");
+    try {
+        await signOut(auth);
+        alert("Logged Out Successfully!");
+    } catch (error) {
+        console.error("Logout Error:", error);
+        alert(error.message);
+    }
 }
 
-// Fetch Items from Firestore
+// Fetch Items from Firestore with improved debugging
 async function loadItems() {
     const itemList = document.querySelector(".item-list");
+    
+    if (!itemList) {
+        console.error("Error: '.item-list' element not found.");
+        return;
+    }
+
     itemList.innerHTML = "";
-    console.log("Fetching items..."); // Debugging
+    console.log("Fetching items from Firestore...");
 
     try {
         const querySnapshot = await getDocs(collection(db, "items"));
+
+        if (querySnapshot.empty) {
+            console.warn("No items found in Firestore collection.");
+            itemList.innerHTML = "<p>No items available.</p>";
+            return;
+        }
+
         querySnapshot.forEach((doc) => {
             const item = doc.data();
-            console.log("Fetched item:", item); // Debugging
+            console.log("Fetched item:", item);
 
             itemList.innerHTML += `
                 <div class="item">
                     <img src="${item.Image || 'https://placehold.co/200x200?text=No+Image'}" alt="${item.Name}">
-                    <h3>${item.Name}</h3>
-                    <p>Tag: ${item.Tag}</p>
-                    <p class="price">₹${item.Price}</p>
+                    <h3>${item.Name || 'Unnamed Item'}</h3>
+                    <p>Tag: ${item.Tag || 'No Tag'}</p>
+                    <p class="price">₹${item.Price || 'N/A'}</p>
                 </div>
             `;
         });
+
+        console.log("Items loaded successfully.");
     } catch (error) {
-        console.error("Error fetching items:", error);
+        console.error("Error fetching items from Firestore:", error);
+        itemList.innerHTML = `<p>Error loading items. Please try again later.</p>`;
     }
 }
+
+// Ensure Firebase is initialized before loading items
+document.addEventListener("DOMContentLoaded", () => {
+    console.log("Document loaded. Initializing Firebase...");
+    loadItems();
+});
 
 // Expose functions globally
 window.signUpUser = signUpUser;
 window.signInUser = signInUser;
 window.logOutUser = logOutUser;
 window.loadItems = loadItems;
-
-// Load items on page load
-window.onload = loadItems;
