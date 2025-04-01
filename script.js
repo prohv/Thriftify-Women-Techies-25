@@ -19,6 +19,8 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+let itemsData = []; // Store fetched items for filtering
+
 // Signup Function
 async function signUpUser() {
     const email = prompt("Enter Email:");
@@ -58,23 +60,54 @@ async function loadItems() {
 
     try {
         const querySnapshot = await getDocs(collection(db, "items"));
+        itemsData = []; // Reset stored items
+
         querySnapshot.forEach((doc) => {
             const item = doc.data();
             console.log("Fetched item:", item); // Debugging
-
-            itemList.innerHTML += `
-                <div class="item">
-                    <img src="${item.Image || 'https://placehold.co/200x200?text=No+Image'}" alt="${item.Name}">
-                    <h3>${item.Name}</h3>
-                    <p>Tag: ${item.Tag}</p>
-                    <p class="price">₹${item.Price}</p>
-                </div>
-            `;
+            itemsData.push(item);
         });
+
+        displayItems(itemsData);
     } catch (error) {
         console.error("Error fetching items:", error);
     }
 }
+
+// Function to display items in the UI
+function displayItems(items) {
+    const itemList = document.querySelector(".item-list");
+    itemList.innerHTML = "";
+
+    items.forEach((item) => {
+        itemList.innerHTML += `
+            <div class="item">
+                <img src="${item.Image || 'https://placehold.co/200x200?text=No+Image'}" alt="${item.Name}">
+                <h3>${item.Name}</h3>
+                <p>Tag: ${item.Tag}</p>
+                <p class="price">₹${item.Price}</p>
+            </div>
+        `;
+    });
+}
+
+// Search Function
+function searchItems() {
+    const searchInput = document.querySelector(".search-bar").value.toLowerCase();
+    const filteredItems = itemsData.filter(item => 
+        item.Name.toLowerCase().includes(searchInput) || 
+        item.Tag.toLowerCase().includes(searchInput)
+    );
+    displayItems(filteredItems);
+}
+
+// Attach event listener to the search bar
+document.addEventListener("DOMContentLoaded", () => {
+    const searchBar = document.querySelector(".search-bar");
+    if (searchBar) {
+        searchBar.addEventListener("input", searchItems);
+    }
+});
 
 // Expose functions globally
 window.signUpUser = signUpUser;
@@ -84,4 +117,5 @@ window.loadItems = loadItems;
 
 // Load items on page load
 window.onload = loadItems;
+
 
