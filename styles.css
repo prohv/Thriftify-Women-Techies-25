@@ -22,7 +22,6 @@ header {
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-    position: relative;
 }
 
 .nav-buttons button {
@@ -34,23 +33,6 @@ header {
     font-size: 1rem;
     transition: color 0.3s ease;
 }
-.text-link {
-    color: #555;
-    font-size: 1rem;
-    cursor: pointer;
-    text-decoration: none;
-    padding: 10px 18px;
-    transition: color 0.3s ease;
-    position: absolute; /* Position the Upload Item link absolutely */
-    left: 1150px; /* Move it closer to the logo */
-    top: 50%; /* Vertically center it */
-    transform: translateY(-50%); /* Adjust vertical centering */
-}
-a {
-    text-decoration: none; /* Removes underline */
-    color: inherit; /* Inherit color from parent (i.e., .text-link color) */
-}
-
 
 .nav-buttons button:hover {
     color: #007bff;
