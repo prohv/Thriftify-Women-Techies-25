@@ -17,16 +17,21 @@ const auth = getAuth(app);
 function toggleForms() {
     const params = new URLSearchParams(window.location.search);
     const type = params.get("type");
+    console.log("Page loaded with type:", type);
     if (type === "signup") {
         document.getElementById("login-form").style.display = "none";
         document.getElementById("signup-form").style.display = "block";
+        console.log("Showing signup form");
     } else {
         document.getElementById("signup-form").style.display = "none";
         document.getElementById("login-form").style.display = "block";
+        console.log("Showing login form");
     }
 }
 
-toggleForms();
+document.addEventListener("DOMContentLoaded", () => {
+    toggleForms();
+});
 
 document.getElementById("signup-link").addEventListener("click", (event) => {
     event.preventDefault();
@@ -38,13 +43,13 @@ document.getElementById("login-link").addEventListener("click", (event) => {
     window.location.href = "auth.html?type=login";
 });
 
-document.getElementById("signup-button").addEventListener("click", () => {
+document.getElementById("signup-button")?.addEventListener("click", () => {
     window.location.href = "auth.html?type=signup";
 });
 
 // Handle sign-up
 const signupForm = document.getElementById("signupForm");
-signupForm.addEventListener("submit", (event) => {
+signupForm?.addEventListener("submit", (event) => {
     event.preventDefault();
     const email = document.getElementById("signup-email").value;
     const password = document.getElementById("signup-password").value;
@@ -61,7 +66,7 @@ signupForm.addEventListener("submit", (event) => {
 
 // Handle login
 const loginForm = document.getElementById("loginForm");
-loginForm.addEventListener("submit", (event) => {
+loginForm?.addEventListener("submit", (event) => {
     event.preventDefault();
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
