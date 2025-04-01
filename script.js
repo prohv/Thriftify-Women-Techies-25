@@ -1,73 +1,39 @@
-// Import Firebase modules
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
 import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
 
-// Firebase Config
 const firebaseConfig = {
-    apiKey: "AIzaSyABy3Pe6oQHI0SFLgwqoyoVeCbH0u_vIyo",
-    authDomain: "thriftify-2c973.firebaseapp.com",
-    projectId: "thriftify-2c973",
-    storageBucket: "thriftify-2c973.appspot.com",
-    messagingSenderId: "105212347644",
-    appId: "1:105212347644:web:14b66bfc80a9e8875b4379",
-    measurementId: "G-CT0E1MM2LC"
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_AUTH_DOMAIN",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_STORAGE_BUCKET",
+    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+    appId: "YOUR_APP_ID"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
 let itemsData = []; // Store fetched items for filtering
 
-// Signup Function
-async function signUpUser() {
-    const email = prompt("Enter Email:");
-    const password = prompt("Enter Password:");
-    try {
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        await addDoc(collection(db, "users"), { email });
-        alert("Sign Up Successful!");
-    } catch (error) {
-        alert(error.message);
-    }
-}
-
-// Signin Function
-async function signInUser() {
-    const email = prompt("Enter Email:");
-    const password = prompt("Enter Password:");
-    try {
-        await signInWithEmailAndPassword(auth, email, password);
-        alert("Login Successful!");
-    } catch (error) {
-        alert(error.message);
-    }
-}
-
-// Logout Function
-async function logOutUser() {
-    await signOut(auth);
-    alert("Logged Out Successfully!");
+// Redirect to Auth Page
+function redirectToAuth(type) {
+    window.location.href = `auth.html?type=${type}`;
 }
 
 // Fetch Items from Firestore
 async function loadItems() {
     const itemList = document.querySelector(".item-list");
     itemList.innerHTML = "";
-    console.log("Fetching items..."); // Debugging
 
     try {
         const querySnapshot = await getDocs(collection(db, "items"));
-        itemsData = []; // Reset stored items
-
+        itemsData = [];
         querySnapshot.forEach((doc) => {
             const item = doc.data();
-            console.log("Fetched item:", item); // Debugging
             itemsData.push(item);
         });
-
         displayItems(itemsData);
     } catch (error) {
         console.error("Error fetching items:", error);
@@ -107,16 +73,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if (searchBar) {
         searchBar.addEventListener("input", searchItems);
     }
+    document.getElementById("signup-button")?.addEventListener("click", () => redirectToAuth("signup"));
+    document.getElementById("login-button")?.addEventListener("click", () => redirectToAuth("login"));
 });
 
 // Expose functions globally
-window.signUpUser = signUpUser;
-window.signInUser = signInUser;
-window.logOutUser = logOutUser;
+window.redirectToAuth = redirectToAuth;
 window.loadItems = loadItems;
 
 // Load items on page load
 window.onload = loadItems;
-
-
-
