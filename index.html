@@ -15,8 +15,8 @@
             <input type="text" class="search-bar" placeholder="Search">
         </div>
         <div class="nav-buttons">
-            <button onclick="signUpUser()">Sign Up</button>
-            <button onclick="signInUser()">Login</button>
+            <button onclick="redirectToAuth('signup')">Sign Up</button>
+            <button onclick="redirectToAuth('login')">Login</button>
             <button><i class="fa fa-shopping-cart"></i></button>
         </div>
     </header>
@@ -78,5 +78,11 @@
         <p>&copy; 2025 Thrift Haven - Your Destination for Sustainable Style</p>
         <p>Vellore, Tamil Nadu, India | support@thrifthaven.com</p>
     </footer>
+    
+    <script>
+        function redirectToAuth(type) {
+            window.location.href = `auth.html?type=${type}`;
+        }
+    </script>
 </body>
 </html>
