@@ -5,7 +5,8 @@ import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.c
 
 // Firebase Config
 const firebaseConfig = {
-    apiKey: "AIzaSyABy3Pe6oQHI0SFLgwqoyoVeCbH0u_vIyo",
+    require('dotenv').config
+    var apiKey: process.env.APIkey,
     authDomain: "thriftify-2c973.firebaseapp.com",
     projectId: "thriftify-2c973",
     storageBucket: "thriftify-2c973.appspot.com",
