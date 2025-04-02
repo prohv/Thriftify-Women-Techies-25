@@ -184,8 +184,8 @@ footer {
 .popup {
     display: none; /* Initially hidden */
     position: fixed;
-    left: 20;
-    top: 0;
+    right: 20;
+    top: 10;
     width: 70%;
     height: 80%;
     padding: 40px;
