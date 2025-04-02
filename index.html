@@ -1,33 +1,397 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Oooh+Baby&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Oooh+Baby&display=swap" rel="stylesheet">
-    <link rel="icon" href="https://i.postimg.cc/fWXTsZFp/Frame-4.png" type="image/png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thriftify</title>
-    <script type="module" src="script.js"></script>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Modern Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f8f8;
+            color: #333;
+            line-height: 1.7;
+        }
+
+        header {
+            background-color: #fff;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        }
+
+        .nav-buttons button {
+            background: none;
+            border: none;
+            color: #555;
+            padding: 10px 18px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-buttons button:hover {
+            color: #007bff;
+        }
+
+        .item-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .item {
+            background-color: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            width: calc(33.33% - 40px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+        .search-container {
+            position: relative;
+            width: 300px;
+        }
+        .search-bar {
+            width: 100%;
+            padding: 10px;
+            padding-right: 40px; /* Space for the magnifying glass */
+            border: 2px solid #ccc;
+            border-radius: 20px;
+            font-size: 16px;
+            outline: none;
+            background: url("https://pouch.jumpshare.com/preview/YNVy8m0ipiuGcAqPhlSIvojpkuepOPRlPzVoooCEeoiiEa0_0TCYSWm876p7V0v7x2YLMfAuspsnIf-CRwwcpWQ7vW1ReRqlF0JqFsPuLQw") no-repeat right 10px center; /* Use your image here */
+            background-size: 20px; /* Adjust the size of the image */
+            transition: border-color 0.3s ease;
+        }
+        .search-bar:focus {
+            border-color: #007bff;
+        }
+
+
+        .item img {
+            max-width: 100%;
+            border-radius: 6px;
+        }
+
+
+        .price {
+            font-weight: bold;
+            color: #007bff;
+        }
+        .banner {
+            width: 100%;
+            background-color: #494949;
+            color: white;
+            text-align: center;
+            padding: 0px 0;
+            font-size: 1.5rem;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .second-banner {
+            background-color: #BDC9BB;
+            font-size: 1.3rem;
+            font-weight: 400;
+            padding: 5px 0;
+        }
+        .menu-container {
+            display: flex;
+            justify-content: center;
+            padding: 0 50x;
+            width: 100%;
+        }
+        .menu-item {
+            position: relative;
+            cursor: pointer;
+            padding: 5px;
+            font-size: 1rem;
+            color: #494949;
+            flex-grow: 1;
+            transition: color 0.3s ease;
+        }
+        .menu-item:hover {
+            color: #5D6C55;
+        }
+        .dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #333;
+            width: 100%;
+            padding: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+        .dropdown a {
+            display: block;
+            color: white;
+            padding: 8px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .dropdown a:hover {
+            background-color: #555;
+        }
+
+
+        .menu-item:hover .dropdown {
+            display: block;
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            display: flex; /* Added */
+            justify-content: center; /* Added */
+            align-items: center; /* Added */
+            gap: 20px; /* Added */
+        }
+        footer button{
+            background-color: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            text-decoration: underline;
+        }
+
+        /* Popup Styles */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .popup-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            overflow-y: auto;
+            max-height: 80vh;
+            text-align: left;
+        }
+
+        .popup-content h2 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .popup-content p {
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        .popup-close {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .popup-close button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .popup-close button:hover {
+            background-color: #0056b3;
+        }
+        .popup-check{
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .item {
+                width: 100%;
+            }
+            footer {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+        import { getFirestore, collection, addDoc, getDocs, query, orderBy, where } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Signup Function
+        async function signUpUser() {
+            const email = prompt("Enter Email:");
+            const password = prompt("Enter Password:");
+             // Show terms and conditions popup on sign up
+            showTermsAndConditionsPopup(() => {
+                // Only create user if terms are accepted
+                createUser(email, password);
+            });
+
+        }
+        async function createUser(email,password){
+             try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                await addDoc(collection(db, "users"), { email });
+                alert("Sign Up Successful!");
+            } catch (error) {
+                alert(error.message);
+            }
+        }
+
+        // Signin Function
+        async function signInUser() {
+            const email = prompt("Enter Email:");
+            const password = prompt("Enter Password:");
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                alert("Login Successful!");
+            } catch (error) {
+                alert(error.message);
+            }
+        }
+
+        // Logout Function
+        async function logOutUser() {
+            await signOut(auth);
+            alert("Logged Out Successfully!");
+        }
+
+        async function loadItems(sortType = null, filters = {}, searchTerm = "") {
+            const itemList = document.querySelector(".item-list");
+            itemList.innerHTML = "";
+
+            let itemsRef = collection(db, "items");
+            let q;
+
+            if (searchTerm) {
+                q = query(itemsRef, where("name", ">=", searchTerm), where("name", "<=", searchTerm + "\uf8ff"));
+            } else if (Object.keys(filters).length > 0) {
+                let conditions = [];
+                for (const key in filters) {
+                    if (filters[key] !== 'all') {
+                        conditions.push(where(key, "==", filters[key]));
+                    }
+                }
+                q = query(itemsRef, ...conditions);
+            } else {
+                q = itemsRef;
+            }
+
+
+            if (sortType) {
+                if (sortType === "price-asc") {
+                    q = query(q, orderBy("price", "asc"));
+                } else if (sortType === "price-desc") {
+                    q = query(q, orderBy("price", "desc"));
+                } else if (sortType === "time-latest") {
+                    q = query(q, orderBy("timestamp", "desc"));
+                }
+            }
+
+
+            const querySnapshot = await getDocs(q);
+            querySnapshot.forEach((doc) => {
+                const item = doc.data();
+                itemList.innerHTML += `
+                    <div class="item"
+                        data-gender="${item.gender || 'all'}"
+                        data-color="${item.color || 'all'}"
+                        data-size="${item.size || 'all'}"
+                        data-price="${item.price}"
+                        data-time="${item.timestamp?.toDate() || new Date()}"
+                        >
+                        <img src="${item.image || 'https://placehold.co/200x200?text=No+Image'}" alt="${item.name}">
+                        <h3>${item.name}</h3>
+                        <p>${item.description}</p>
+                        <p class="price">$${item.price}</p>
+                    </div>
+                `;
+            });
+        }
+        function showTermsAndConditionsPopup(callback) {
+            const popup = document.getElementById('termsPopup');
+            popup.style.display = 'flex';
+
+            const acceptButton = document.getElementById('acceptTerms');
+            const agreeCheck = document.getElementById('agreeCheck');
+
+            acceptButton.onclick = () => {
+                if (agreeCheck.checked) {
+                    popup.style.display = 'none';
+                    callback(); // Execute the callback function (create user)
+                } else {
+                    alert("Please agree to the terms and conditions to continue.");
+                }
+
+            };
+        }
+
+        window.signUpUser = signUpUser;
+        window.signInUser = signInUser;
+        window.logOutUser = logOutUser;
+        window.loadItems = loadItems;
+        window.showTermsAndConditionsPopup = showTermsAndConditionsPopup;
+    </script>
+
 </head>
 <body onload="loadItems()">
     <header>
         <img src="https://i.ibb.co/DftrFYZY/IMG-20250401-161220.jpg" alt="Thriftify Logo" style="max-width:15%;">
-        
         <div class="search-container">
             <input type="text" class="search-bar" placeholder="Search">
         </div>
         <div class="nav-buttons">
-            <button>Upload</button>
-            <button>Sort By</button>
-            <button>Filter</button>
-            <button onclick="signInUser()">Login</button>
+            <button onclick="redirectToAuth('signup')">Sign Up</button>
+            <button onclick="redirectToAuth('login')">Login</button>
+            <button><i class="fa fa-shopping-cart"></i></button>
         </div>
     </header>
 
@@ -81,13 +445,54 @@
     </div>
 
     <div class="item-list">
-        <!-- Items will be loaded dynamically -->
-    </div>
+        </div>
 
     <footer>
         <p>&copy; 2025 Thriftify - Your Destination for Sustainable Style</p>
         <p>support@thriftify.com</p>
+        <button onclick="showTermsAndConditionsPopup()">Terms & Conditions</button>
     </footer>
+    
+    <div id="termsPopup" class="popup">
+        <div class="popup-content">
+            <h2>Terms and Conditions for Theft and Damage of Rented Products</h2>
+            <p>
+                <strong>1. Responsibility for the Product:</strong> The renter is fully responsible for the care and safekeeping of the rented product during the rental period. This responsibility includes, but is not limited to, ensuring the product is not stolen, damaged, or lost.
+            </p>
+            <p>
+                <strong>2. Theft:</strong> In the event the rented product is stolen, the renter must:
+                <ol type="a">
+                    <li>Cooperate fully with the owner.</li>
+                    <li>Be liable to pay 4 times the price listed for one day of rent for the stolen product.</li>
+                </ol>
+            </p>
+            <p>
+                <strong>3. Damage:</strong>
+                 The renter is responsible for returning the rented product in the same condition as it was received,
+                 excluding normal wear and tear. The following conditions apply to damaged products:
+                <ol type="a">
+                    <li>
+                        <strong>Minor Damage:</strong> If the product is returned with minor damage (e.g., small stains, tears, or scratches) that can be repaired,
+                        the renter will be liable for the cost of repair.
+                    </li>
+                    <li>
+                        <strong>Major Damage:</strong> If the product is returned with major damage that cannot be repaired (e.g., significant breakage, irreparable tears),
+                         the renter will be liable for the full replacement value of the product.
+                    </li>
+                    <li>
+                         <strong>Irreparable Damage:</strong> In cases where the damage is beyond repair, the renter will be charged the full replacement cost of the item.
+                    </li>
+                </ol>
+            </p>
+            <div class="popup-check">
+                <input type="checkbox" id="agreeCheck">
+                <label for="agreeCheck">I agree to the terms and conditions</label>
+            </div>
+            <div class="popup-close">
+                <button id="acceptTerms">Accept</button>
+            </div>
+        </div>
+    </div>
     
     <script>
         function redirectToAuth(type) {
