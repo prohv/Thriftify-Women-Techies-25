@@ -108,12 +108,25 @@ document.addEventListener("DOMContentLoaded", () => {
         searchBar.addEventListener("input", searchItems);
     }
 });
+export function closePopup() {
+        const popup = document.getElementById("popup");
+        popup.style.display = "none";  // Hide the popup
+    }
+export function openPopup() {
+        document.getElementById("popup").style.display = "flex";
+    }
+
+
+
 
 // Expose functions globally
 window.signUpUser = signUpUser;
 window.signInUser = signInUser;
 window.logOutUser = logOutUser;
 window.loadItems = loadItems;
+window.closePopup = closePopup;
+window.openPopup = openPopup;
+
 
 // Load items on page load
 window.onload = loadItems;
