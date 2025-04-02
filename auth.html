@@ -8,54 +8,111 @@
     <!-- Link to external CSS file -->
     <link rel="stylesheet" href="auth.css">
 
-    <!-- Firebase SDK (Loaded via auth.js instead) -->
-    <script type="module" src="auth.js"></script>
+    <!-- Firebase SDK & Auth Script -->
+    <script defer src="auth.js"></script>
 </head>
 <body>
     <div class="container">
+        <!-- Login Form -->
         <div id="login-form">
             <h2>Login</h2>
             <form id="loginForm">
                 <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" placeholder="Enter your email">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" name="email" placeholder="Enter your email" required>
                 </div>
                 <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" placeholder="Enter your password">
+                    <label for="login-password">Password</label>
+                    <div class="password-container">
+                        <input type="password" id="login-password" name="password" placeholder="Enter your password" required>
+                        <span class="toggle-password" onclick="togglePassword('login-password')">👁️</span>
+                    </div>
                 </div>
                 <div class="form-group">
-                    <button type="submit">Login</button>
+                    <button type="submit" id="login-btn">Login</button>
                 </div>
             </form>
+            <p class="error-message" id="login-error"></p>
             <div class="link-container">
                 <a href="#" id="signup-link">Create an Account</a>
             </div>
         </div>
 
+        <!-- Signup Form -->
         <div id="signup-form" style="display: none;">
             <h2>Sign Up</h2>
             <form id="signupForm">
                 <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" id="name" name="name" required placeholder="Enter your name">
+                    <label for="signup-name">Name</label>
+                    <input type="text" id="signup-name" name="name" required placeholder="Enter your name">
                 </div>
                 <div class="form-group">
-                    <label for="email">Email</label>
+                    <label for="signup-email">Email</label>
                     <input type="email" id="signup-email" name="email" required placeholder="Enter your email">
                 </div>
                 <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="signup-password" name="password" required placeholder="Enter your password">
+                    <label for="signup-password">Password</label>
+                    <div class="password-container">
+                        <input type="password" id="signup-password" name="password" required placeholder="Enter your password">
+                        <span class="toggle-password" onclick="togglePassword('signup-password')">👁️</span>
+                    </div>
                 </div>
                 <div class="form-group">
-                    <button type="submit">Sign Up</button>
+                    <button type="submit" id="signup-btn">Sign Up</button>
                 </div>
             </form>
+            <p class="error-message" id="signup-error"></p>
             <div class="link-container">
                 <a href="#" id="login-link">Already have an account? Login</a>
             </div>
         </div>
     </div>
+
+    <!-- JavaScript for Handling Auth -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // DOM Elements
+            const loginForm = document.getElementById("loginForm");
+            const signupForm = document.getElementById("signupForm");
+            const loginSection = document.getElementById("login-form");
+            const signupSection = document.getElementById("signup-form");
+
+            const loginError = document.getElementById("login-error");
+            const signupError = document.getElementById("signup-error");
+
+            // Toggle between Login & Signup Forms
+            document.getElementById("signup-link").addEventListener("click", function (e) {
+                e.preventDefault();
+                loginSection.style.display = "none";
+                signupSection.style.display = "block";
+            });
+
+            document.getElementById("login-link").addEventListener("click", function (e) {
+                e.preventDefault();
+                signupSection.style.display = "none";
+                loginSection.style.display = "block";
+            });
+
+            // Handle Login Form Submission
+            loginForm.addEventListener("submit", function (e) {
+                e.preventDefault();
+                loginError.textContent = ""; // Clear previous errors
+                signInUser();
+            });
+
+            // Handle Signup Form Submission
+            signupForm.addEventListener("submit", function (e) {
+                e.preventDefault();
+                signupError.textContent = ""; // Clear previous errors
+                signUpUser();
+            });
+
+            // Password Toggle Function
+            window.togglePassword = function (inputId) {
+                const passwordInput = document.getElementById(inputId);
+                passwordInput.type = passwordInput.type === "password" ? "text" : "password";
+            };
+        });
+    </script>
 </body>
 </html>
