@@ -108,11 +108,11 @@ document.addEventListener("DOMContentLoaded", () => {
         searchBar.addEventListener("input", searchItems);
     }
 });
-export function closePopup() {
+async function closePopup() {
         const popup = document.getElementById("popup");
         popup.style.display = "none";  // Hide the popup
     }
-export function openPopup() {
+async function openPopup() {
         document.getElementById("popup").style.display = "flex";
     }
 
