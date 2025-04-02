@@ -70,6 +70,7 @@ header {
 .search-container {
     position: relative;
     width: 300px;
+    left:80px;
 }
 
 .search-bar {
