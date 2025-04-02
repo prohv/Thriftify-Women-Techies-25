@@ -6,26 +6,12 @@
     <title>Upload Item - Thriftify</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        /* Modern Styles */
         body {
             font-family: 'Montserrat', sans-serif;
             margin: 0;
             padding: 0;
             background-color: #f8f8f8;
             color: #333;
-        }
-
-        header {
-            background-color: #fff;
-            padding: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-        }
-
-        header img {
-            max-width: 15%;
         }
 
         .upload-form-container {
@@ -35,13 +21,6 @@
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-        }
-
-        .upload-form-container h2 {
-            text-align: center;
-            margin-bottom: 30px;
-            color: #212529;
-            font-weight: 600;
         }
 
         .form-group {
@@ -59,12 +38,6 @@
             padding: 12px;
             border: 1px solid #e0e0e0;
             border-radius: 6px;
-            font-size: 1rem;
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            height: 100px;
         }
 
         .form-actions {
@@ -80,11 +53,6 @@
             border-radius: 6px;
             font-size: 1.1rem;
             cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .upload-button:hover {
-            background-color: #45a049;
         }
 
         .upload-button:disabled {
@@ -98,13 +66,12 @@
         import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-storage.js";
 
         const firebaseConfig = {
-                apiKey: "AIzaSyABy3Pe6oQHI0SFLgwqoyoVeCbH0u_vIyo",
-                authDomain: "thriftify-2c973.firebaseapp.com",
-                projectId: "thriftify-2c973",
-                storageBucket: "thriftify-2c973.appspot.com",
-                messagingSenderId: "105212347644",
-                appId: "1:105212347644:web:14b66bfc80a9e8875b4379",
-                measurementId: "G-CT0E1MM2LC"
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
         };
 
         const app = initializeApp(firebaseConfig);
@@ -126,27 +93,21 @@
                 return;
             }
 
-            // Validate file size (Max: 5MB)
-            if (imageFile.size > 5 * 1024 * 1024) {
-                alert("Image file is too large! Max size is 5MB.");
-                return;
-            }
-
-            // Validate file type
-            if (!['image/jpeg', 'image/png', 'image/webp'].includes(imageFile.type)) {
-                alert("Invalid file type! Only JPEG, PNG, and WebP are allowed.");
-                return;
-            }
+            uploadBtn.disabled = true;
+            uploadBtn.textContent = "Uploading...";
 
             try {
-                uploadBtn.disabled = true;
-                uploadBtn.textContent = "Uploading...";
-
-                const uniqueID = Date.now(); // Prevent duplicate uploads
+                console.log("Uploading image...");
+                const uniqueID = Date.now();
                 const imageRef = ref(storage, `images/${uniqueID}_${imageFile.name}`);
+                
                 await uploadBytes(imageRef, imageFile);
-                const imageURL = await getDownloadURL(imageRef);
+                console.log("Image uploaded successfully.");
 
+                const imageURL = await getDownloadURL(imageRef);
+                console.log("Image URL retrieved:", imageURL);
+
+                console.log("Saving item to database...");
                 await addDoc(collection(db, "items"), {
                     name,
                     description,
@@ -158,6 +119,7 @@
                     timestamp: new Date()
                 });
 
+                console.log("Item saved successfully.");
                 alert("Item uploaded successfully!");
                 window.location.href = '/';
             } catch (error) {
@@ -173,10 +135,6 @@
     </script>
 </head>
 <body>
-    <header>
-        <img src="https://i.ibb.co/DftrFYZY/IMG-20250401-161220.jpg" alt="Thriftify Logo">
-    </header>
-
     <div class="upload-form-container">
         <h2>Upload New Item</h2>
         <form>
