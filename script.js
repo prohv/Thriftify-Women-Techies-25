@@ -108,13 +108,13 @@ document.addEventListener("DOMContentLoaded", () => {
         searchBar.addEventListener("input", searchItems);
     }
 });
-async function closePopup() {
-        const popup = document.getElementById("popup");
-        popup.style.display = "none";  // Hide the popup
-    }
-async function openPopup() {
-        document.getElementById("popup").style.display = "flex";
-    }
+function openPopup() {
+    document.getElementById("popup").style.display = "block";
+}
+
+function closePopup() {
+    document.getElementById("popup").style.display = "none";
+}
 
 
 
