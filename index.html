@@ -1,99 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Oooh+Baby&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Oooh+Baby&display=swap" rel="stylesheet">
-    
-    <link href="https://fonts.googleapis.com/css2?family=Finlandica:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
-    <link rel="icon" href="https://i.postimg.cc/fWXTsZFp/Frame-4.png" type="image/png">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thriftify</title>
-    <script type="module" src="script.js"></script>
-    <link rel="stylesheet" href="styles.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Oooh+Baby&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oooh+Baby&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Finlandica:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <link rel="icon" href="https://i.postimg.cc/fWXTsZFp/Frame-4.png" type="image/png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thriftify</title>
+    <script type="module" src="script.js"></script>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body onload="loadItems()">
-    <header>
-        <img src="https://i.ibb.co/DftrFYZY/IMG-20250401-161220.jpg" alt="Thriftify Logo" style="max-width:15%;">
-        
-        <div class="search-container">
-            <input type="text" class="search-bar" placeholder="Search">
-        </div>
-        <div class="nav-buttons">
-            <button onclick="window.location.href='upload.html'">Upload</button>
-            <button>Sort By</button>
-            <button>Filter</button>
-            <button onclick="signUpUser()">Sign Up</button>
-            <button onclick="signInUser()">Login</button>
-        </div>
-    </header>
+    <header>
+        <img src="https://i.ibb.co/DftrFYZY/IMG-20250401-161220.jpg" alt="Thriftify Logo" style="max-width:15%;">
+        
+        <div class="search-container">
+            <input type="text" class="search-bar" placeholder="Search">
+        </div>
+        <div class="nav-buttons">
+            <button onclick="window.location.href='upload.html'">Upload</button>
+            <button>Sort By</button>
+            <button>Filter</button>
+            <button onclick="signUpUser()">Sign Up</button>
+            <button onclick="signInUser()">Login</button>
+        </div>
+    </header>
 
-    <div class="banner">
-        Thrifting Made Easy
-    </div>
-    
-    <div class="banner second-banner">
-        <div class="menu-container">
-            <div class="menu-item">Topwear
-                <div class="dropdown">
-                    <a href="#">Shirts</a>
-                    <a href="#">T-Shirts</a>
-                    <a href="#">Sweaters</a>
-                </div>
-            </div>
-            
-            <div class="menu-item">Bottomwear
-                <div class="dropdown">
-                    <a href="#">Jeans</a>
-                    <a href="#">Shorts</a>
-                    <a href="#">Trousers</a>
-                </div>
-            </div>
+    <div class="banner">
+        Thrifting Made Easy
+    </div>
+    
+    <div class="banner second-banner">
+        <div class="menu-container">
+            <div class="menu-item">Topwear
+                <div class="dropdown">
+                    <a href="#">Shirts</a>
+                    <a href="#">T-Shirts</a>
+                    <a href="#">Sweaters</a>
+                </div>
+            </div>
+            
+            <div class="menu-item">Bottomwear
+                <div class="dropdown">
+                    <a href="#">Jeans</a>
+                    <a href="#">Shorts</a>
+                    <a href="#">Trousers</a>
+                </div>
+            </div>
 
-            <div class="menu-item">Dresses
-                <div class="dropdown">
-                    <a href="#">Maxi Dresses</a>
-                    <a href="#">Mini Dresses</a>
-                    <a href="#">A-line Dresses</a>
-                </div>
-            </div>
-            
-            <div class="menu-item">Footwear
-                <div class="dropdown">
-                    <a href="#">Sneakers</a>
-                    <a href="#">Boots</a>
-                    <a href="#">Heels</a>
-                </div>
-            </div>
-            
-            <div class="menu-item">Accessories
-                <div class="dropdown">
-                    <a href="#">Bags</a>
-                    <a href="#">Hats</a>
-                    <a href="#">Watches</a>
-                    <a href="#">Jewellery</a>
-                </div>
-            </div>
-        </div>
-    </div>
+            <div class="menu-item">Dresses
+                <div class="dropdown">
+                    <a href="#">Maxi Dresses</a>
+                    <a href="#">Mini Dresses</a>
+                    <a href="#">A-line Dresses</a>
+                </div>
+            </div>
+            
+            <div class="menu-item">Footwear
+                <div class="dropdown">
+                    <a href="#">Sneakers</a>
+                    <a href="#">Boots</a>
+                    <a href="#">Heels</a>
+                </div>
+            </div>
+            
+            <div class="menu-item">Accessories
+                <div class="dropdown">
+                    <a href="#">Bags</a>
+                    <a href="#">Hats</a>
+                    <a href="#">Watches</a>
+                    <a href="#">Jewellery</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <div class="item-list">
-        <!-- Items will be loaded dynamically -->
-    </div>
+    <div class="item-list">
+        <!-- Items will be loaded dynamically -->
+    </div>
 
-    <footer>
-        <p>&copy; 2025 Thriftify - Your Destination for Sustainable Style</p>
-        <p>support@thriftify.com</p>
-        <p> <a href="#" onclick="openPopup()">Terms & Conditions</a></p>
-    </footer>
-    
-    <div id="popup" class="popup">
+    <footer>
+        <p>&copy; 2025 Thriftify - Your Destination for Sustainable Style</p>
+        <p>support@thriftify.com</p>
+
+        <p> <a href="#" onclick="openPopup()">Terms & Conditions</a></p>
+        
+    </footer>
+    <div id="popup" class="popup">
         <div class="popup-content">
             <span class="close" onclick="closePopup()">&times;</span>
             <h2 class="popup-heading">Terms and Conditions for Theft and Damage of Rented Products</h2>
@@ -110,11 +110,15 @@
             </div>
 
         </div>
-    </div>
-    <script>
-        function redirectToAuth(type) {
-            window.location.href = `auth.html?type=${type}`;
-        }
-    </script>
+    </div>
+
+        
+    <script>
+        function redirectToAuth(type) {
+            window.location.href = `auth.html?type=${type}`;
+        }
+    </script>
+
 </body>
 </html>
+
