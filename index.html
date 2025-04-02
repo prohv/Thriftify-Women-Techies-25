@@ -9,6 +9,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Oooh+Baby&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Oooh+Baby&display=swap" rel="stylesheet">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Finlandica:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
     <link rel="icon" href="https://i.postimg.cc/fWXTsZFp/Frame-4.png" type="image/png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -88,8 +90,27 @@
     <footer>
         <p>&copy; 2025 Thriftify - Your Destination for Sustainable Style</p>
         <p>support@thriftify.com</p>
+        <p> <a href="#" onclick="openPopup()">Terms & Conditions</a></p>
     </footer>
     
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <span class="close" onclick="closePopup()">&times;</span>
+            <h2 class="popup-heading">Terms and Conditions for Theft and Damage of Rented Products</h2>
+            <div class="popup-body">
+                <p> <strong> 1. Responsibility for the Product:</strong> The renter is fully responsible for the care and safekeeping of the rented product during the rental period. This responsibility includes, but is not limited to, ensuring the product is not stolen, damaged, or lost.</p>
+                <p>  <strong>2. Theft: </strong> In the event the rented product is stolen, the renter must:
+
+                    Cooperate fully with the owner.
+                    Be liable to pay 4 times the price listed for one day of rent for the stolen product.</p>
+                <p> <strong>3. Damage: </strong> The renter is responsible for returning the rented product in the same condition as it was received, excluding normal wear and tear. The following conditions apply to damaged products:</p>
+                <p> <u>Minor Damage: </u> If the product is returned with minor damage (e.g., small stains, tears, or scratches) that can be repaired, the renter will be liable for the cost of repair.</p>
+                <p> <u>Major Damage: </u>If the product is returned with major damage that cannot be repaired (e.g., significant breakage, irreparable tears), the renter will be liable for the full replacement value of the product.</p>
+                <p> <u>Irreparable Damage:</u> In cases where the damage is beyond repair, the renter will be charged the full replacement cost of the item.</p>
+            </div>
+
+        </div>
+    </div>
     <script>
         function redirectToAuth(type) {
             window.location.href = `auth.html?type=${type}`;
