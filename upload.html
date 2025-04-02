@@ -91,7 +91,7 @@
             event.preventDefault(); // 🔹 Prevents form from refreshing
 
             const name = document.getElementById('name').value.trim();
-            const description = document.getElementById('description').value.trim();
+            const description = document.getElementById('tag').value.trim();
             const price = document.getElementById('price').value.trim();
             const gender = document.getElementById('gender').value;
             const size = document.getElementById('size').value;
@@ -101,7 +101,7 @@
             const errorMessage = document.querySelector(".error-message");
 
             // 🔹 Input Validation
-            if (!name || !description || !price || !imageFile) {
+            if (!name || !tag || !price || !imageFile) {
                 errorMessage.textContent = "⚠️ Please fill in all required fields!";
                 errorMessage.style.display = "block";
                 return;
@@ -149,7 +149,7 @@
                 console.log("Saving item to database...");
                 await addDoc(collection(db, "items"), {
                     name,
-                    description,
+                    tag,
                     price: priceValue,
                     gender,
                     size,
@@ -184,7 +184,7 @@
         <p class="error-message"></p>
         <form id="uploadForm" onsubmit="uploadItem(event)">
             <div class="form-group"><label>Name:*<input type="text" id="name" required></label></div>
-            <div class="form-group"><label>Description:*<textarea id="description" required></textarea></label></div>
+            <div class="form-group"><label>Tag:*<textarea id="tag" required></textarea></label></div>
             <div class="form-group"><label>Price:*<input type="number" id="price" required></label></div>
             <div class="form-group"><label>Image:*<input type="file" id="image" accept="image/*" required></label></div>
             <div class="form-actions"><button type="submit" class="upload-button">Upload Item</button></div>
